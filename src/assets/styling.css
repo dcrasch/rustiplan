@@ -5,6 +5,7 @@
 body {
   font-family: 'Open Sans', sans-serif;
   position: relative;
+  margin: 0;
 }
 
 table.spreadsheet {
@@ -58,22 +59,8 @@ table.spreadsheet td {
   outline: none;
 }
 
-.cell[data-error] {
-  border: 2px solid hsla(360, 70%, 50%, 1.0);
-}
-
-.cell:focus[data-error]::after {
-  background: #fff;
-  border: 1px solid var(--color-dark-grey);
-  box-shadow: 0 5px 10px hsla(0, 0%, 0%, 0.2);
-  content: attr(data-error);
-  margin-top: 3rem;
-  padding: 0.2rem .5rem;
-  position: absolute;
-}
-
 .cell.editing label {
-    display: none;
+  display: none;
 }
 
 .cell input {
