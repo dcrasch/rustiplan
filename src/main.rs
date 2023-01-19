@@ -31,24 +31,28 @@ pub fn Cell(cx: Scope<CellProps>) -> Element {
     let contents = cx.props.children.clone();
     let editing = if **is_editing { "editing" } else { "" };
 
+    use_effect(cx, is_editing, |is_editing| async move {
+        if *is_editing.get() {
+            // TODO use_node_ref
+            // https://github.com/DioxusLabs/dioxus/issues/631
+            println!("focus!");
+        }
+    });
+
     cx.render(rsx! {
     div { class: "cell {editing}",
           onclick: move |_| { is_editing.set(true) },
-          label {
-                  "{contents}"
-              },
+          label { "{contents}"},
           is_editing.then(|| {
-          rsx! {
-                      input {
-              value: "{contents.clone()}",
-              autofocus: "true",
-              tabindex: 0,
-              onchange: move |evt| {
-                  data.write()[cx.props.row][cx.props.column]=evt.value.clone();
-                              is_editing.set(false);
-              },
-                      }
-         }
+              rsx! {
+                input {
+                    value: "{contents.clone()}",
+                    onchange: move |evt| {
+                        data.write()[cx.props.row][cx.props.column]=evt.value.clone();
+                        is_editing.set(false);
+                    },
+                }
+            }
         }),
     }
     })
