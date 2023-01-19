@@ -1,0 +1,2 @@
+# rustiplan
+Spreadsheet like multiplan
