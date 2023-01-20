@@ -1,3 +1,4 @@
+use dioxus::html::input_data::keyboard_types::Key;
 use dioxus::prelude::*;
 use dioxus_desktop::{Config, WindowBuilder};
 use fermi::*;
@@ -16,41 +17,48 @@ fn main() {
 
 static DATA: AtomRef<Vec<Vec<String>>> = |_| vec![vec!["".to_string(); 5]; 10];
 
-#[derive(Props, PartialEq)]
-pub struct CellProps {
+#[derive(Props)]
+pub struct CellProps<'a> {
     pub row: usize,
     pub column: usize,
     pub children: String,
+    pub onupdate: EventHandler<'a, String>,
 }
 
 #[allow(non_snake_case)]
-pub fn Cell(cx: Scope<CellProps>) -> Element {
-    let data = use_atom_ref(cx, DATA);
-
+pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
     let is_editing = use_state(cx, || false);
-    let contents = cx.props.children.clone();
+    let contents = use_state(cx, || cx.props.children.clone());
     let editing = if **is_editing { "editing" } else { "" };
-
-    use_effect(cx, is_editing, |is_editing| async move {
-        if *is_editing.get() {
-            // TODO use_node_ref
-            // https://github.com/DioxusLabs/dioxus/issues/631
-            println!("focus!");
-        }
-    });
 
     cx.render(rsx! {
     div { class: "cell {editing}",
-          onclick: move |_| { is_editing.set(true) },
+          onclick: move |_| is_editing.set(true),
           label { "{contents}"},
           is_editing.then(|| {
               rsx! {
                 input {
                     value: "{contents.clone()}",
-                    onchange: move |evt| {
-                        data.write()[cx.props.row][cx.props.column]=evt.value.clone();
-                        is_editing.set(false);
+                    oninput: move |evt| {
+                        contents.set(evt.value.clone());
                     },
+            onblur: move |evt| {
+            cx.props.onupdate.call(contents.get().to_string());
+            is_editing.set(false);
+            },
+            onkeypress: move |evt| {
+            match evt.key() {
+                Key::Escape => {
+                contents.set(cx.props.children.to_string());
+                is_editing.set(false);
+                },
+                Key::Enter => {
+                cx.props.onupdate.call(contents.get().to_string());
+                is_editing.set(false);
+                }
+                _ => {}
+            }
+            }
                 }
             }
         }),
@@ -66,7 +74,6 @@ fn app(cx: Scope) -> Element {
         th {
             format!("{}",column) }}
     });
-
     let rows = (0..10).map(move |row_index| {
         let cells = ('A'..='E').enumerate().map(move |(column_index, _column)| {
             let children = data
@@ -77,8 +84,11 @@ fn app(cx: Scope) -> Element {
                 .unwrap()
                 .to_string();
             rsx! {
-                td {
-            Cell { row:row_index, column:column_index, children:children}
+                td { Cell { row:row_index, column:column_index, children:children,
+			    onupdate: move |value: String| {
+				data.write()[row_index][column_index]=value.clone();
+			    }
+		}
                 }
             }
         });
