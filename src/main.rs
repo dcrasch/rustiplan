@@ -2,8 +2,7 @@ use dioxus::prelude::*;
 use dioxus_desktop::{Config, WindowBuilder};
 
 mod components;
-
-use components::sheet::Sheet;
+use components::Sheet;
 
 fn main() {
     dioxus_desktop::launch_cfg(
@@ -14,9 +13,14 @@ fn main() {
                 "<style>{}</style>",
                 include_str!("assets/styling.css")
             )),
-    );
+);
 }
 
 fn app(cx: Scope) -> Element {
-    cx.render(rsx!(Sheet {}))
-}
+    cx.render(rsx!(
+	div {
+	    Sheet {}
+	}
+	)
+)
+  }

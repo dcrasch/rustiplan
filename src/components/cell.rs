@@ -1,5 +1,5 @@
-use dioxus::html::input_data::keyboard_types::Key;
 use dioxus::prelude::*;
+use dioxus::html::input_data::keyboard_types::Key;
 
 #[derive(Props)]
 pub struct CellProps<'a> {
@@ -7,6 +7,7 @@ pub struct CellProps<'a> {
     pub column: usize,
     pub children: String,
     pub onupdate: EventHandler<'a, String>,
+    pub onselected: EventHandler<'a>,
 }
 
 pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
@@ -15,17 +16,21 @@ pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
     let editing = if **is_editing { "editing" } else { "" };
 
     cx.render(rsx! {
-    div { class: "cell {editing}",
-          onclick: move |_| is_editing.set(true),
-          label { "{contents}"},
-          is_editing.then(|| {
+    div {
+        class: "cell {editing}",
+        onclick: move |_| {
+            cx.props.onselected.call(());
+            is_editing.set(true);
+        },
+        label { "{contents}"},
+        is_editing.then(|| {
               rsx! {
                 input {
                     value: "{contents.clone()}",
                     oninput: move |evt| {
                         contents.set(evt.value.clone());
                     },
-            onblur: move |evt| {
+            onblur: move |_| {
             cx.props.onupdate.call(contents.get().to_string());
             is_editing.set(false);
             },
