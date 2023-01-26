@@ -1,4 +1,5 @@
-use dioxus::prelude::*;
+use dioxus::prelude::*;    
+use crate::formula::eval;
 
 #[derive(Props,PartialEq)]
 pub struct FormulaBarProps {

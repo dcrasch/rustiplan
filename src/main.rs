@@ -2,7 +2,9 @@ use dioxus::prelude::*;
 use dioxus_desktop::{Config, WindowBuilder};
 
 mod components;
-use components::Sheet;
+mod formula;
+
+use crate::components::Sheet;
 
 fn main() {
     dioxus_desktop::launch_cfg(

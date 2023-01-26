@@ -17,6 +17,7 @@ to build reliable and efficient software.
 # Inspiration
 
 * https://buildyourownspreadsheet.com/
+* https://createlang.rs/
 
 # License
 
