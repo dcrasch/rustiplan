@@ -15,14 +15,13 @@ fn main() {
                 "<style>{}</style>",
                 include_str!("assets/styling.css")
             )),
-);
+    );
 }
 
 fn app(cx: Scope) -> Element {
     cx.render(rsx!(
-	div {
-	    Sheet {}
-	}
-	)
-)
-  }
+    div {
+        Sheet {}
+    }
+    ))
+}

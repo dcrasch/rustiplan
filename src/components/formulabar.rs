@@ -1,7 +1,7 @@
-use dioxus::prelude::*;    
 use crate::formula::eval;
+use dioxus::prelude::*;
 
-#[derive(Props,PartialEq)]
+#[derive(Props, PartialEq)]
 pub struct FormulaBarProps {
     pub formula: String,
 }
@@ -9,7 +9,7 @@ pub struct FormulaBarProps {
 pub fn FormulaBar(cx: Scope<FormulaBarProps>) -> Element {
     cx.render(rsx! {
     div { class: "formulabar",
-	  input {
+      input {
             value: "{cx.props.formula}",
       }
     }

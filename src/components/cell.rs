@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
 use dioxus::html::input_data::keyboard_types::Key;
+use dioxus::prelude::*;
 
 #[derive(Props)]
 pub struct CellProps<'a> {

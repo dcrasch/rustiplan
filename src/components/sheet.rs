@@ -41,8 +41,7 @@ pub fn Sheet(cx: Scope) -> Element {
                             }
                         }
                 }
-            }
-        );
+            });
         rsx! {
             tr {
                 th { scope: "row", format!("{}",row_index+1) }
@@ -56,7 +55,7 @@ pub fn Sheet(cx: Scope) -> Element {
             if let Some((row,column)) = selection.get() {
                 rsx!{ CellIndicator { row: *row, column: *column } }
             } else {
-                rsx!{ " " }
+                rsx!{ "-" }
             },
             FormulaBar { formula: "=1+1".to_string()}
         },

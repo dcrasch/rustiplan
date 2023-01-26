@@ -18,3 +18,19 @@ pub fn eval(expr: &Expr) -> i32 {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::formula::{parse, parse_expr};
+
+    #[test]
+    fn simple() {
+        assert_eq!(eval(&parse_expr(parse("1+1").unwrap())), 2);
+    }
+
+    #[test]
+    fn simple_multiply() {
+        assert_eq!(eval(&parse_expr(parse("11*11").unwrap())), 121);
+    }
+}
