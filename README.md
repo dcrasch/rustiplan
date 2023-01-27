@@ -1,13 +1,15 @@
 # rustiplan
 Spreadsheet like multiplan
 
+
+![rustiplan.png](https://github.com/dcrasch/rustiplan/blob/master/rustiplan.png?raw=true)
+
 # Requirement
 
 * https://dioxuslabs.com/ User interfaces that run anywhere. 🦀
 Written in Rust, inspired by React
 * https://www.rust-lang.org/ A language empowering everyone
 to build reliable and efficient software. 
-
 
 # Multiplan
 
