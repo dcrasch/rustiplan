@@ -1,8 +1,8 @@
 # rustiplan
+
 Spreadsheet like multiplan
 
-
-![rustiplan.png](https://github.com/dcrasch/rustiplan/blob/master/rustiplan.png?raw=true)
+<img width="816" alt="rustiplan" src="https://user-images.githubusercontent.com/2651634/215062697-62aaca04-c602-4cee-9e1d-2bbb8a67130b.png">
 
 # Requirement
 
