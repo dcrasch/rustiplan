@@ -20,12 +20,12 @@ pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
     let editing = if **is_editing { "editing" } else { "" };
 
     use_effect(cx,(content,display_value), |(content,display_value)| async move {
-	if let Ok(p) = parse(&content) {
-	    let dv = format!("{}",eval(&parse_expr(p)));
-	    if display_value!=dv {
-		display_value.set(dv);
-	    }
-	}
+        if let Ok(p) = parse(&content) {
+            let dv = format!("{}",eval(&parse_expr(p)));
+            if display_value!=dv {
+                display_value.set(dv);
+            }
+        }
     });
     
     let start_editing = move |_| {

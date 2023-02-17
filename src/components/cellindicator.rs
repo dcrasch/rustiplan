@@ -8,8 +8,8 @@ pub struct CellIndicatorProps {
 
 pub fn CellIndicator(cx: Scope<CellIndicatorProps>) -> Element {
     cx.render(rsx! {
-    div { class: "cellindicator",
-       "R{cx.props.row+1}C{cx.props.column+1}"
-    }
+        div { class: "cellindicator",
+            "R{cx.props.row+1}C{cx.props.column+1}"
+        }
     })
 }
