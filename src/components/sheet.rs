@@ -10,9 +10,7 @@ pub fn Sheet(cx: Scope) -> Element {
     let data = use_atom_ref(cx, DATA);
     let columns = ('A'..='E').map(|column| {
         rsx! {
-            th {
-                format!("{}",column)
-            }
+            th { format!("{}",column) }
         }
     });
     let rows = (0..10).map(move |row_index| {
@@ -27,19 +25,19 @@ pub fn Sheet(cx: Scope) -> Element {
                     .unwrap()
                     .to_string();
                 rsx! {
-                        td {
-                            Cell {
-                                row:row_index,
-                                column:column_index,
-                                children:children,
-                                onupdate: move |value: String| {
-                                    data.write()[row_index][column_index]=value.clone();
-                                },
-                                onselected: move |_| {
-                                    selection.set(Some((row_index,column_index)));
-                                }
+                    td {
+                        Cell {
+                            row: row_index,
+                            column: column_index,
+                            children: children,
+                            onupdate: move |value: String| {
+                                data.write()[row_index][column_index] = value.clone();
+                            },
+                            onselected: move |_| {
+                                selection.set(Some((row_index, column_index)));
                             }
                         }
+                    }
                 }
             });
         rsx! {
@@ -56,20 +54,17 @@ pub fn Sheet(cx: Scope) -> Element {
                 rsx!{ CellIndicator { row: *row, column: *column } }
             } else {
                 rsx!{ "-" }
-            },
-            FormulaBar { formula: "=1+1".to_string()}
-        },
-        table {
-            class : "spreadsheet",
+            }
+            FormulaBar { formula: "=1+1".to_string() }
+        }
+        table { class: "spreadsheet",
             thead {
                 tr {
-                    th { aria_label: "empty header"}
+                    th { aria_label: "empty header" }
                     columns
                 }
             }
-            tbody {
-                rows
-            }
+            tbody { rows }
         }
     ))
 }

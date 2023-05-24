@@ -10,8 +10,6 @@ fn main() {
 
 fn app(cx: Scope) -> Element {
     cx.render(rsx!(
-    div {
-        Sheet {}
-    }
+        div { Sheet {} }
     ))
 }

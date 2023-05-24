@@ -76,3 +76,7 @@ table.spreadsheet td {
   width: calc(100% + 2 * var(--padding-offset));
 }
 
+.formula-bar input {
+  font-size: 120%;
+  width: 100%;
+}

@@ -54,11 +54,9 @@ pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
     };
 
     cx.render(rsx! {
-    div {
-        class: "cell {editing}",
-        onclick: start_editing,
-        label { "{display_value}"},
-        is_editing.then(|| { rsx! {
+        div { class: "cell {editing}", onclick: start_editing,
+            label { "{display_value}" }
+            is_editing.then(|| { rsx! {
         input {
                 value: "{content}",
                 oninput: update_content,
@@ -67,7 +65,7 @@ pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
         onkeydown: keydown,
         }
     }
-        }),
-    }
+        })
+        }
     })
 }

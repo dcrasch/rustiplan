@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = "0.3.1"
-dioxus-web = "0.3.0"
+dioxus = "0.3.2"
+dioxus-web = "0.3.2"
 fermi = "0.3.0"
 lazy_static = "1.4.0"
 pest = "2.5.3"
