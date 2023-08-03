@@ -26,11 +26,11 @@ mod tests {
 
     #[test]
     fn simple() {
-        assert_eq!(eval(&parse_expr(parse("1+1").unwrap())), 2);
+        assert_eq!( eval(&parse_expr(parse("1+1").unwrap())), 2 );
     }
 
     #[test]
     fn simple_multiply() {
-        assert_eq!(eval(&parse_expr(parse("11*11").unwrap())), 121);
+        assert_eq!( eval(&parse_expr(parse("11*11").unwrap())), 121 );
     }
 }

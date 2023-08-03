@@ -1,5 +1,6 @@
 use dioxus::html::input_data::keyboard_types::Key;
 use dioxus::prelude::*;
+use log::{info, LevelFilter};
 
 use crate::formula::{parse,parse_expr,eval};
 
@@ -10,6 +11,7 @@ pub struct CellProps<'a> {
     pub column: usize,
     pub children: String,
     pub onupdate: EventHandler<'a, String>,
+    pub onchange: EventHandler<'a, String>,
     pub onselected: EventHandler<'a>,
 }
 
@@ -38,7 +40,10 @@ pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
         is_editing.set(false);
     };
 
-    let update_content = move |evt: Event<FormData>| content.set(evt.value.clone());
+    let update_content = move |evt: Event<FormData>| {
+	cx.props.onchange.call(evt.value.clone());
+	content.set(evt.value.clone());
+    };
 
     let keypress = move |evt: Event<KeyboardData>| {
         if evt.key() == Key::Enter {
@@ -57,14 +62,14 @@ pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
         div { class: "cell {editing}", onclick: start_editing,
             label { "{display_value}" }
             is_editing.then(|| { rsx! {
-        input {
-                value: "{content}",
-                oninput: update_content,
-                onblur: blur,
-                onkeypress: keypress,
-        onkeydown: keydown,
-        }
-    }
+		input {		    
+                    value: "{content}",
+		    oninput: update_content,
+		    onblur: blur,
+                    onkeypress: keypress,
+		    onkeydown: keydown,
+		}
+	    }
         })
         }
     })

@@ -1,13 +1,14 @@
 use dioxus::prelude::*;
 use fermi::*;
+use log::{info, LevelFilter};
 
 use crate::components::{Cell, CellIndicator, FormulaBar};
-static DATA: AtomRef<Vec<Vec<String>>> = |_| vec![vec!["".to_string(); 5]; 10];
-
+static DATA: AtomRef<Vec<Vec<String>>> = AtomRef(|_| vec![vec!["".to_string(); 5]; 10]);
 pub fn Sheet(cx: Scope) -> Element {
     use_init_atom_root(cx);
     let selection = use_state(cx, || None);
-    let data = use_atom_ref(cx, DATA);
+    let current_formula = use_state(cx, || None);
+    let data = use_atom_ref(cx, &DATA);
     let columns = ('A'..='E').map(|column| {
         rsx! {
             th { format!("{}",column) }
@@ -33,8 +34,12 @@ pub fn Sheet(cx: Scope) -> Element {
                             onupdate: move |value: String| {
                                 data.write()[row_index][column_index] = value.clone();
                             },
+                            onchange: move |value: String| {
+                                current_formula.set(Some(value.clone()));
+                            },
                             onselected: move |_| {
                                 selection.set(Some((row_index, column_index)));
+                                current_formula.set(Some(data.read()[row_index][column_index].clone()));
                             }
                         }
                     }
@@ -55,7 +60,12 @@ pub fn Sheet(cx: Scope) -> Element {
             } else {
                 rsx!{ "-" }
             }
-            FormulaBar { formula: "=1+1".to_string() }
+            if let Some(formula) = current_formula.get() {
+		rsx!{ FormulaBar { formula: formula.clone() } }
+	    }
+	    else {
+		rsx!{ "" }
+	    }
         }
         table { class: "spreadsheet",
             thead {
