@@ -59,13 +59,13 @@ pub fn Sheet(cx: Scope) -> Element {
             if let Some((row,column)) = selection.get() {
                 rsx!{ CellIndicator { row: *row, column: *column } }
             } else {
-                rsx!{ "-" }
+                rsx!{ div { "-" } }
             }
             if let Some(formula) = current_formula.get() {
                 rsx!{ FormulaBar { formula: formula.clone() } }
             }
             else {
-                rsx!{ "?" }
+                rsx!{ div { ".." } }
             }
         }
         table { class: "spreadsheet",
