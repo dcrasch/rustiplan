@@ -35,6 +35,7 @@ pub fn Sheet(cx: Scope) -> Element {
                                 data.write()[row_index][column_index] = value.clone();
                             },
                             onchange: move |value: String| {
+                                info!("on change set formula {}",value.clone());
                                 current_formula.set(Some(value.clone()));
                             },
                             onselected: move |_| {
@@ -61,11 +62,11 @@ pub fn Sheet(cx: Scope) -> Element {
                 rsx!{ "-" }
             }
             if let Some(formula) = current_formula.get() {
-		rsx!{ FormulaBar { formula: formula.clone() } }
-	    }
-	    else {
-		rsx!{ "" }
-	    }
+                rsx!{ FormulaBar { formula: formula.clone() } }
+            }
+            else {
+                rsx!{ "?" }
+            }
         }
         table { class: "spreadsheet",
             thead {

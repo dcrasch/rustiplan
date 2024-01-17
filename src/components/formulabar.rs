@@ -8,6 +8,6 @@ pub struct FormulaBarProps {
 
 pub fn FormulaBar(cx: Scope<FormulaBarProps>) -> Element {
     cx.render(rsx! {
-        div { class: "formula-bar", div { contenteditable: true } }
+        div { class: "formula-bar", div { contenteditable: true, "{cx.props.formula}" } }
     })
 }

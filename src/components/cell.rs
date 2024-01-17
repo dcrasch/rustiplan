@@ -2,8 +2,7 @@ use dioxus::html::input_data::keyboard_types::Key;
 use dioxus::prelude::*;
 use log::{info, LevelFilter};
 
-use crate::formula::{parse,parse_expr,eval};
-
+use crate::formula::{eval, parse, parse_expr};
 
 #[derive(Props)]
 pub struct CellProps<'a> {
@@ -18,18 +17,22 @@ pub struct CellProps<'a> {
 pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
     let is_editing = use_state(cx, || false);
     let content = use_state(cx, || cx.props.children.clone());
-    let display_value = use_state(cx, || cx.props.children.clone());    
+    let display_value = use_state(cx, || cx.props.children.clone());
     let editing = if **is_editing { "editing" } else { "" };
 
-    use_effect(cx,(content,display_value), |(content,display_value)| async move {
-        if let Ok(p) = parse(&content) {
-            let dv = format!("{}",eval(&parse_expr(p)));
-            if display_value!=dv {
-                display_value.set(dv);
+    use_effect(
+        cx,
+        (content, display_value),
+        |(content, display_value)| async move {
+            if let Ok(p) = parse(&content) {
+                let dv = format!("{}", eval(&parse_expr(p)));
+                if display_value != dv {
+                    display_value.set(dv);
+                }
             }
-        }
-    });
-    
+        },
+    );
+
     let start_editing = move |_| {
         cx.props.onselected.call(());
         is_editing.set(true);
@@ -41,8 +44,8 @@ pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
     };
 
     let update_content = move |evt: Event<FormData>| {
-	cx.props.onchange.call(evt.value.clone());
-	content.set(evt.value.clone());
+        cx.props.onchange.call(evt.value.clone());
+        content.set(evt.value.clone());
     };
 
     let keypress = move |evt: Event<KeyboardData>| {
@@ -62,14 +65,14 @@ pub fn Cell<'a>(cx: Scope<'a, CellProps<'a>>) -> Element {
         div { class: "cell {editing}", onclick: start_editing,
             label { "{display_value}" }
             is_editing.then(|| { rsx! {
-		input {		    
+        input {
                     value: "{content}",
-		    oninput: update_content,
-		    onblur: blur,
+            oninput: update_content,
+            onblur: blur,
                     onkeypress: keypress,
-		    onkeydown: keydown,
-		}
-	    }
+            onkeydown: keydown,
+        }
+        }
         })
         }
     })
